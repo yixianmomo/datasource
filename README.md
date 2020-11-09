@@ -1,9 +1,9 @@
-# datasource
-自用的数据库连接池
+# 自用的数据库
+自用的数据库连接池,使用简单,代码小，只有40kb左右
 
 
         DBConfig config = new DBConfig();
-
+        // 设置数据库参数 
         config.setDbDriver("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         config.setDbHost("127.0.0.1");
         config.setDbPort(1433);
@@ -11,8 +11,9 @@
         config.setUser("sa");
         config.setPassword("123456");
 
-
+        // 创建连接工厂
         DefaultPooledFactory pooledFactory = new DefaultPooledFactory(config);
+		// 实例化数据库连接池  这里可以根据业务自己去扩展
         StarDataSource dbPoolUtil = new StarDataSource(pooledFactory);
 		
 		 DBUtil dbUtil = null;
