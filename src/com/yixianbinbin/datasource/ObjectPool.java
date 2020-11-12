@@ -10,11 +10,4 @@ public interface ObjectPool<T> {
 
     void returnObject(T var1);
 
-    int getNumActive();
-
-    int getNumIdle();
-
-    int getCurrSize();
-
-
 }
