@@ -8,14 +8,14 @@ import java.util.Date;
 /**
  * Created by Administrator on 2020/10/22.
  */
-public class DBUtil {
+public class DBConnection {
 
     private Connection connection = null;
     private DBConfig dbConfig = null;
-    private boolean isIdle = true;
+    private boolean isIdle = false;
     private Date idleBeginTime = null;
 
-    public DBUtil(DBConfig dbConfig) {
+    public DBConnection(DBConfig dbConfig) {
         this.dbConfig = dbConfig;
         open();
     }
@@ -29,7 +29,7 @@ public class DBUtil {
                         dbConfig.getUser(),dbConfig.getPassword());
             }
         } catch (SQLException | ClassNotFoundException e) {
-            throw new StarDataSourceException("数据库连接异常");
+            throw new YxbbDataSourceException("数据库连接异常");
         }
     }
 

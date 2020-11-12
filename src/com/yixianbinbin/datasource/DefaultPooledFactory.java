@@ -3,7 +3,7 @@ package com.yixianbinbin.datasource;
 /**
  * Created by Administrator on 2020/11/6.
  */
-public class DefaultPooledFactory implements PooledFactory<DBUtil> {
+public class DefaultPooledFactory implements PooledFactory<DBConnection> {
 
     private DBConfig dbConfig = new DBConfig();
 
@@ -12,26 +12,26 @@ public class DefaultPooledFactory implements PooledFactory<DBUtil> {
     }
 
     @Override
-    public synchronized DBUtil makeObject()  {
-        return new DBUtil(dbConfig);
+    public synchronized DBConnection makeObject()  {
+        return new DBConnection(dbConfig);
     }
 
     @Override
-    public synchronized void destroyObject(DBUtil var1)  {
+    public synchronized void destroyObject(DBConnection var1)  {
         if(null != var1) {
             var1.close();
         }
     }
 
     @Override
-    public synchronized boolean validateObject(DBUtil var1) {
+    public synchronized boolean validateObject(DBConnection var1) {
         return var1 != null && var1.getConnection() != null;
     }
 
     @Override
-    public synchronized void activateObject(DBUtil var1)  {
+    public synchronized void activateObject(DBConnection var1)  {
         if (null == var1) {
-            throw new StarDataSourceException("连接实例为null");
+            throw new YxbbDataSourceException("连接实例为null");
         }
         // 如果断开就重连
         if (null == var1.getConnection()) {
@@ -40,7 +40,7 @@ public class DefaultPooledFactory implements PooledFactory<DBUtil> {
     }
 
     @Override
-    public synchronized void passivateObject(DBUtil var1)  {
+    public synchronized void passivateObject(DBConnection var1)  {
         if (null != var1) {
             var1.close();
         }

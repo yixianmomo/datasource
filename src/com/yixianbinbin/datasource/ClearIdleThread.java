@@ -6,18 +6,18 @@ import java.util.Iterator;
 /**
  * Created by Administrator on 2020/11/9.
  */
-public class ValidationThread implements Runnable {
+public class ClearIdleThread implements Runnable {
 
-    private StarDataSource dataSource = null;
+    private YxbbDataSource dataSource = null;
 
-    public ValidationThread(StarDataSource dataSource) {
+    public ClearIdleThread(YxbbDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public void run() {
-        Iterator<DBUtil> iter = dataSource.getPool().iterator();
-        DBUtil item = null;
+        Iterator<DBConnection> iter = dataSource.getPool().iterator();
+        DBConnection item = null;
         while (iter.hasNext()) {
             item = iter.next();
             try {

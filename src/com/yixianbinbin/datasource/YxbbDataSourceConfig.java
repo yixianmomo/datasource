@@ -5,25 +5,25 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2020/11/9.
  */
-public class StarDataSourceConfig implements Serializable {
+public class YxbbDataSourceConfig implements Serializable {
 
     private static final long serialVersionUID = 1221405269125826567L;
     private int maxIdle = 5;//最大空闲数
     private int maxPoolSize = 10;//最大连接池大小
-    private int maxIdleSeconds = 300;//最大空闲秒数
-    private boolean testValidation = false;
+    private int maxIdleSeconds = 3600;//最大空闲秒数
+    private boolean testValidation = true;
     private String testSql = "select 1";//测试连接
-    private int testIntervalMinutes = 1;//间隔分钟数
+    private int testIntervalMinutes = 10;//间隔分钟数
 
-    public StarDataSourceConfig() {
+    public YxbbDataSourceConfig() {
     }
 
-    public StarDataSourceConfig(int maxIdle, int maxPoolSize) {
+    public YxbbDataSourceConfig(int maxIdle, int maxPoolSize) {
         this.maxIdle = maxIdle;
         this.maxPoolSize = maxPoolSize;
     }
 
-    public StarDataSourceConfig(int maxIdle, int maxPoolSize, int maxIdleSeconds, String testSql, int testIntervalMinutes) {
+    public YxbbDataSourceConfig(int maxIdle, int maxPoolSize, int maxIdleSeconds, String testSql, int testIntervalMinutes) {
         this.maxIdle = maxIdle;
         this.maxPoolSize = maxPoolSize;
         this.maxIdleSeconds = maxIdleSeconds;
