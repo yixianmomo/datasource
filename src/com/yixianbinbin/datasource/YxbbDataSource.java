@@ -46,7 +46,7 @@ public class YxbbDataSource implements DataSource, ObjectPool<DBConnection> {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return borrowObject().getConnection();
+        return borrowObject();
     }
 
     @Override
@@ -90,8 +90,7 @@ public class YxbbDataSource implements DataSource, ObjectPool<DBConnection> {
     }
 
     public boolean sendTestSql(DBConnection dbConnection) throws SQLException {
-        Connection conn = dbConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(dataSourceConfig.getTestSql());
+        PreparedStatement ps = dbConnection.prepareStatement(dataSourceConfig.getTestSql());
         return ps.execute();
     }
 
@@ -103,6 +102,9 @@ public class YxbbDataSource implements DataSource, ObjectPool<DBConnection> {
             idleLock.lock();
             if (!pool.isEmpty()) {
                 item = pool.poll();
+                if (!factory.validateObject(item)) {
+                    factory.activateObject(item);
+                }
             }
         } catch (Exception e) {
 

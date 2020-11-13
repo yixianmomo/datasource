@@ -23,12 +23,17 @@ public class ClearIdleThread implements Runnable {
             try {
                 // 空闲可用的连接
                 if (item.isIdle()) {
-                    if (((System.currentTimeMillis() - item.getIdleBeginTime().getTime())/1000) > dataSource.getDataSourceConfig().getMaxIdleSeconds()) {
-                        DebugLog.info("规定时间内没业务,准备删除");
+                    if (((System.currentTimeMillis() - item.getIdleBeginTime().getTime()) / 1000) > dataSource.getDataSourceConfig().getMaxIdleSeconds()) {
+//                        DebugLog.info("规定时间内没业务,准备删除");
                         dataSource.removeObject(item);
+                        continue;
                     }
-                    if(dataSource.getDataSourceConfig().isTestValidation() && !dataSource.sendTestSql(item)){
-                        DebugLog.info("测试连接成员关闭,准备删除");
+                    if (item.isClosed()) {
+                        dataSource.removeObject(item);
+                        continue;
+                    }
+                    if (dataSource.getDataSourceConfig().isTestValidation() && !dataSource.sendTestSql(item)) {
+//                        DebugLog.info("测试连接成员关闭,准备删除");
                         dataSource.removeObject(item);
                     }
                 }
