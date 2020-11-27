@@ -1,4 +1,4 @@
-# 自用的数据库
+# 自用的数据库连接池
 自用的数据库连接池,使用简单,代码小，只有40kb左右
 
 
@@ -16,10 +16,9 @@
 		// 实例化数据库连接池  这里可以根据业务自己去扩展
         YxbbDataSource dbPoolUtil = new YxbbDataSource(pooledFactory);
 		
-		 DBConnection dbconn = null;
+		 DBConnection conn = null;
 		 try {
-             dbconn = dbPoolUtil.borrowObject();
-            Connection conn = dbconn.getConnection();
+             conn = dbPoolUtil.borrowObject();           
             PreparedStatement statement = conn.prepareStatement("select top 1 * from vip_AddFee where JBR=?");
             statement.setString(1, "唐燕");
             ResultSet rs = statement.executeQuery();
@@ -28,7 +27,7 @@
                  System.out.println(rs.getDouble(field));
                }
            } catch (Exception e) {
-                        e.getStackTrace();
+               e.getStackTrace();
             } finally {
-                        dbPoolUtil.returnObject(dbUtil);
+               dbPoolUtil.returnObject(dbUtil);
             }
