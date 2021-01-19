@@ -7,10 +7,12 @@ import java.sql.SQLException;
  */
 public class DefaultPooledFactory implements PooledFactory<DBConnection> {
 
-    private DBConfig dbConfig = new DBConfig();
+    private YxbbDataSourceConfig dataSourceConfig = null;
+    private DBConfig dbConfig = null;
 
-    public DefaultPooledFactory(DBConfig dbConfig) {
-        this.dbConfig = dbConfig;
+    public DefaultPooledFactory(YxbbDataSourceConfig dataSourceConfig) {
+        this.dataSourceConfig = dataSourceConfig;
+        this.dbConfig = new DBConfig(dataSourceConfig.getDriverClassName(),dataSourceConfig.getJdbcUrl(),dataSourceConfig.getUser(),dataSourceConfig.getPassword());
     }
 
     @Override

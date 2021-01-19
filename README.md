@@ -2,12 +2,11 @@
 自用的数据库连接池,使用简单,代码小，只有40kb左右
 
 
-        DBConfig config = new DBConfig();
-        // 设置数据库参数 
-        config.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-               config.setJdbcUrl("jdbc:sqlserver://192.168.0.82:1433;DatabaseName=test");
-        config.setUser("sa");
-        config.setPassword("123456");
+         YxbbDataSourceConfig config = new YxbbDataSourceConfig();
+         config.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+         config.setJdbcUrl("jdbc:sqlserver://192.168.0.82:1433;DatabaseName=test");
+         config.setUser("sa");
+         config.setPassword("123456");
 
         // 创建连接工厂
         DefaultPooledFactory pooledFactory = new DefaultPooledFactory(config);
