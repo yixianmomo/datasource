@@ -8,55 +8,48 @@ import java.io.Serializable;
 public class DBConfig implements Serializable {
 
     private static final long serialVersionUID = 8837968297438495945L;
-    private String dbDriver;
-    private String dbHost;
-    private int dbPort;
-    private String dbName;
+    private String driverClassName;
+    private String jdbcUrl;
+//    private String dbDriver;
+//    private String dbHost;
+//    private Integer dbPort;
+//    private String dbName;
     private String user;
     private String password;
 
     public DBConfig() {
     }
 
-    public DBConfig(String dbDriver, String dbHost, int dbPort, String dbName, String user, String password) {
-        this.dbDriver = dbDriver;
-        this.dbHost = dbHost;
-        this.dbPort = dbPort;
-        this.dbName = dbName;
+    public DBConfig(String driverClassName,String jdbcUrl, String user, String password) {
+        this.driverClassName = driverClassName;
+        this.jdbcUrl = jdbcUrl;
         this.user = user;
         this.password = password;
     }
 
-    public String getDbDriver() {
-        return dbDriver;
+//    public String getDbDriver() {
+//        return dbDriver;
+//    }
+//
+//    public void setDbDriver(String dbDriver) {
+//        this.dbDriver = dbDriver;
+//    }
+
+
+    public String getDriverClassName() {
+        return driverClassName;
     }
 
-    public void setDbDriver(String dbDriver) {
-        this.dbDriver = dbDriver;
+    public void setDriverClassName(String driverClassName) {
+        this.driverClassName = driverClassName;
     }
 
-    public String getDbHost() {
-        return dbHost;
+    public String getJdbcUrl() {
+        return jdbcUrl;
     }
 
-    public void setDbHost(String dbHost) {
-        this.dbHost = dbHost;
-    }
-
-    public int getDbPort() {
-        return dbPort;
-    }
-
-    public void setDbPort(int dbPort) {
-        this.dbPort = dbPort;
-    }
-
-    public String getDbName() {
-        return dbName;
-    }
-
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
+    public void setJdbcUrl(String jdbcUrl) {
+        this.jdbcUrl = jdbcUrl;
     }
 
     public String getUser() {
@@ -74,4 +67,28 @@ public class DBConfig implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+//    public String getDbHost() {
+//        return dbHost;
+//    }
+//
+//    public void setDbHost(String dbHost) {
+//        this.dbHost = dbHost;
+//    }
+//
+//    public Integer getDbPort() {
+//        return dbPort;
+//    }
+//
+//    public void setDbPort(Integer dbPort) {
+//        this.dbPort = dbPort;
+//    }
+//
+//    public String getDbName() {
+//        return dbName;
+//    }
+//
+//    public void setDbName(String dbName) {
+//        this.dbName = dbName;
+//    }
 }

@@ -4,10 +4,8 @@
 
         DBConfig config = new DBConfig();
         // 设置数据库参数 
-        config.setDbDriver("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        config.setDbHost("127.0.0.1");
-        config.setDbPort(1433);
-        config.setDbName("test");
+        config.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+               config.setJdbcUrl("jdbc:sqlserver://192.168.0.82:1433;DatabaseName=test");
         config.setUser("sa");
         config.setPassword("123456");
 

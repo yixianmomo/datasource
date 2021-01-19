@@ -25,9 +25,8 @@ public class DBConnection implements Connection {
     public void open() {
         try {
             if (null == connection) {
-                Class.forName(dbConfig.getDbDriver());
-                connection = DriverManager.getConnection(String.format("jdbc:sqlserver://%s:%s;DatabaseName=%s", dbConfig.getDbHost(), dbConfig.getDbPort(), dbConfig.getDbName()),
-                        dbConfig.getUser(), dbConfig.getPassword());
+                Class.forName(dbConfig.getDriverClassName());
+                connection = DriverManager.getConnection(dbConfig.getJdbcUrl(),dbConfig.getUser(), dbConfig.getPassword());
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new YxbbDataSourceException("数据库连接异常");
@@ -311,12 +310,12 @@ public class DBConnection implements Connection {
         }
     }
 
-//    public Connection getConnection() {
-//        return connection;
-//    }
-
     public DBConfig getDbConfig() {
         return dbConfig;
+    }
+
+    public void setDbConfig(DBConfig dbConfig) {
+        this.dbConfig = dbConfig;
     }
 
     public boolean isIdle() {

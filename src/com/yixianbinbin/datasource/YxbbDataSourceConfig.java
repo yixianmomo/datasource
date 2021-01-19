@@ -9,7 +9,7 @@ public class YxbbDataSourceConfig implements Serializable {
 
     private static final long serialVersionUID = 1221405269125826567L;
     private int maxIdle = 5;//最大空闲数
-    private int maxPoolSize = 10;//最大连接池大小
+    private int maxPoolSize = 20;//最大连接池大小
     private int maxIdleSeconds = 3600;//最大空闲秒数
     private boolean testValidation = true;
     private String testSql = "select 1";//测试连接

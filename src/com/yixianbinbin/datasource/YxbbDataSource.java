@@ -21,11 +21,9 @@ public class YxbbDataSource implements DataSource, ObjectPool<DBConnection> {
     private PooledFactory<DBConnection> factory = null;
     private YxbbDataSourceConfig dataSourceConfig = null;
     private ConcurrentLinkedQueue<DBConnection> pool = new ConcurrentLinkedQueue<>();
+    private ReentrantLock poolLock = new ReentrantLock();
     private int createSize = 0;
     private ScheduledExecutorService checkThread = Executors.newSingleThreadScheduledExecutor();
-    private ReentrantLock borrowLock = new ReentrantLock();
-    private ReentrantLock returnLock = new ReentrantLock();
-    private ReentrantLock idleLock = new ReentrantLock();
 
 
     public YxbbDataSource(PooledFactory<DBConnection> factory) {
@@ -96,76 +94,71 @@ public class YxbbDataSource implements DataSource, ObjectPool<DBConnection> {
 
 
     private DBConnection getIdleObject() {
-
         DBConnection item = null;
+        poolLock.lock();
         try {
-            idleLock.lock();
             if (!pool.isEmpty()) {
                 item = pool.poll();
                 if (!factory.validateObject(item)) {
                     factory.activateObject(item);
                 }
             }
-        } catch (Exception e) {
-
-        } finally {
-            idleLock.unlock();
-        }
-        return item;
-    }
-
-
-    @Override
-    public DBConnection borrowObject() {
-        DBConnection dbConnection = null;
-        dbConnection = getIdleObject();
-        if (null != dbConnection) {
-//            DebugLog.info("拿到空闲连接,当前连接数:" + ";线程:" + Thread.currentThread().getName());
-            return dbConnection;
-        }
-        try {
-            borrowLock.lock();
-            if (getCredateSize() < dataSourceConfig.getMaxPoolSize()) {
-                dbConnection = factory.makeObject();
-                incrementSize();
-//                DebugLog.info("创建连接,当前连接数:" + ";线程:" + Thread.currentThread().getName());
+            if (null == item) {
+                item = createNewObject();
             }
         } catch (Exception e) {
 
         } finally {
-            borrowLock.unlock();
+            poolLock.unlock();
         }
-        if (null == dbConnection) {
-            throw new YxbbDataSourceException("无法获取连接");
+        return item;
+    }
+
+    private DBConnection createNewObject() {
+        DBConnection dbConnection = null;
+        if (getCredateSize() < dataSourceConfig.getMaxPoolSize()) {
+            dbConnection = factory.makeObject();
+            incrementSize();
         }
         return dbConnection;
     }
 
 
     @Override
-    public void returnObject(DBConnection var1) {
+    public DBConnection borrowObject() {
+        DBConnection dbConnection = getIdleObject();
+        if (null == dbConnection) {
+            throw new YxbbDataSourceException("无法获取连接");
+        }
+        dbConnection.setIdle(false);
+        return dbConnection;
+    }
+
+
+    @Override
+    public void returnObject(DBConnection conn) {
+        poolLock.lock();
         try {
-            returnLock.lock();
             if (pool.size() < dataSourceConfig.getMaxIdle()) {
-                if (factory.validateObject(var1)) {
-                    pool.add(var1);
+                conn.setIdle(true);
+                pool.add(conn);
 //                    DebugLog.info("放入连接,当前连接数:" + getCurrSize() + "空闲:" + getNumIdle() + ";线程:" + Thread.currentThread().getName());
-                    return;
-                }
+                return;
             }
-            removeObject(var1);
+            removeObject(conn,false);
         } catch (Exception e) {
 
         } finally {
-            returnLock.unlock();
+            poolLock.unlock();
         }
     }
 
-    public synchronized void removeObject(DBConnection var1) {
-        factory.destroyObject(var1);
-        pool.remove(var1);
+    public void removeObject(DBConnection conn,boolean poolRemove) {
+        factory.destroyObject(conn);
+        if(poolRemove){
+            pool.remove(conn);
+        }
         decrementSize();
-//        DebugLog.info("移除连接,当前连接数:"  + getCredateSize()+ ";线程:" + Thread.currentThread().getName());
     }
 
     public synchronized int getCredateSize() {

@@ -14,19 +14,19 @@ public class DefaultPooledFactory implements PooledFactory<DBConnection> {
     }
 
     @Override
-    public synchronized DBConnection makeObject() {
+    public DBConnection makeObject() {
         return new DBConnection(dbConfig);
     }
 
     @Override
-    public synchronized void destroyObject(DBConnection var1) {
+    public void destroyObject(DBConnection var1) {
         if (null != var1) {
             var1.close();
         }
     }
 
     @Override
-    public synchronized boolean validateObject(DBConnection var1) {
+    public boolean validateObject(DBConnection var1) {
         try {
             return var1 != null && !var1.isClosed();
         } catch (SQLException e) {
@@ -35,7 +35,7 @@ public class DefaultPooledFactory implements PooledFactory<DBConnection> {
     }
 
     @Override
-    public synchronized void activateObject(DBConnection var1) {
+    public void activateObject(DBConnection var1) {
         if (null == var1) {
             throw new YxbbDataSourceException("连接实例为null");
         }
@@ -50,7 +50,7 @@ public class DefaultPooledFactory implements PooledFactory<DBConnection> {
     }
 
     @Override
-    public synchronized void passivateObject(DBConnection var1) {
+    public void passivateObject(DBConnection var1) {
         if (null != var1) {
             var1.close();
         }
