@@ -1,4 +1,4 @@
-package com.yixianbinbin.datasource;
+package com.yxbb.datasource;
 
 import java.sql.SQLException;
 
@@ -10,8 +10,8 @@ public class DefaultPooledFactory implements PooledFactory<DBConnection> {
     private YxbbDataSourceConfig dataSourceConfig = null;
     private DBConfig dbConfig = null;
 
-    public DefaultPooledFactory(YxbbDataSourceConfig dataSourceConfig) {
-        this.dataSourceConfig = dataSourceConfig;
+    public DefaultPooledFactory(YxbbDataSourceConfig yxbbDataSourceConfig) {
+        this.dataSourceConfig = yxbbDataSourceConfig;
         this.dbConfig = new DBConfig(dataSourceConfig.getDriverClassName(),dataSourceConfig.getJdbcUrl(),dataSourceConfig.getUser(),dataSourceConfig.getPassword());
     }
 
